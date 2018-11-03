@@ -2,6 +2,7 @@
 #include "functions.h"
 #include <iostream>
 #include <SDL2/SDL_ttf.h>
+#include <string>
 
 
 
@@ -49,6 +50,8 @@ int main( int argc, char *argv[] ) {
     
     SDL_Surface *screen = SDL_GetWindowSurface( window );
     
+    int total = 0;
+    
     Uint32 white = SDL_MapRGB( screen->format, 255, 255, 255 );
     Uint32 black = SDL_MapRGB( screen->format, 0, 0, 0 );
     Uint32 red = SDL_MapRGB( screen->format, 255, 0, 0 );
@@ -57,13 +60,15 @@ int main( int argc, char *argv[] ) {
     
     TTF_Font *font = TTF_OpenFont( "/home/raiya/Documents/CPP/TEST/04B_30__.TTF", 100 );
     TTF_Font *menu_font = TTF_OpenFont( "/home/raiya/Documents/CPP/TEST/Perfect DOS VGA 437.ttf", 40 );
+    TTF_Font *pause_font = TTF_OpenFont( "/home/raiya/Documents/CPP/TEST/Perfect DOS VGA 437.ttf", 80 );
     
     SDL_Surface *font_surf_title = TTF_RenderText_Solid( font, "SNAKE", white_color );
-    SDL_Surface *font_surf_pause = TTF_RenderText_Solid( font, "PAUSE", white_color );
+    SDL_Surface *font_surf_pause = TTF_RenderText_Solid( pause_font, "PAUSE", white_color );
     SDL_Surface *font_surf_menu_start = TTF_RenderText_Solid( menu_font, "START", white_color );
     SDL_Surface *font_surf_menu_start_selected = TTF_RenderText_Solid( menu_font, "START", menu_color );
     SDL_Surface *font_surf_menu_quit = TTF_RenderText_Solid( menu_font, "QUIT", white_color );
     SDL_Surface *font_surf_menu_quit_selected = TTF_RenderText_Solid( menu_font, "QUIT", menu_color );
+    //SDL_Surface *font_surf_score = TTF_RenderText_Solid( menu_font, "SCORE", white_color );
 
 
     SDL_Rect frect;
@@ -76,16 +81,12 @@ int main( int argc, char *argv[] ) {
     apple.generate();
     
     Sprite object( white, 320, 240);
-
-    SpriteGroup active_sprites;
-    active_sprites.add( &object );
     
     
     int dir_x = 0;
     int dir_y = 0;
-    int total = 0;
+    string score;
     
-    //bool pause = false;
     mode mode_number = starting_screen;
     menu menu_number = start;
     
@@ -218,16 +219,20 @@ int main( int argc, char *argv[] ) {
                 
                     check_fruit( apple, object, total, tail_x, tail_y, object );
                     
+                    //score = total;
+                    
+                    
                     object.set_values( dir_x, dir_y );
                     
                     SDL_FillRect( screen, NULL, black );
+                    
                     
                     if ( total != 0 ) {
                         draw_tail( tail_x, tail_y, total, white, screen );
                         move_tail( tail_x, tail_y, total, white, screen, object );
                     }
                 
-                    draw_game( screen, black, window, active_sprites, apple );
+                    draw_game( screen, black, window, object, apple );
                 }
                 
                 break;

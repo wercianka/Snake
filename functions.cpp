@@ -30,10 +30,10 @@ void check_fruit( Food &food_object,
 void draw_game( SDL_Surface *surface, 
                 Uint32 color, 
                 SDL_Window *window_draw, 
-                SpriteGroup sprite_group, 
+                Sprite head, 
                 Food food_sprite ) {
                     
-    sprite_group.draw( surface );
+    head.draw( surface );
     food_sprite.draw( surface );
     SDL_UpdateWindowSurface( window_draw );
 }

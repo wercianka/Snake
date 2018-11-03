@@ -36,32 +36,6 @@ class Sprite{
   
 };
 
-class SpriteGroup {
-    
-    private:
-        vector <Sprite*> sprites;
-        int sprites_size;
-        
-    public:
-        SpriteGroup copy();
-        
-        void add( Sprite *sprite );
-        
-        void remove( Sprite sprite_object );
-        
-        bool has( Sprite sprite_object );
-        
-        void update();
-        
-        void draw( SDL_Surface *destination );
-        
-        void empty();
-        
-        int size();
-        
-        vector <Sprite*> get_sprites();
-    
-};
 
 class Food{
     private:

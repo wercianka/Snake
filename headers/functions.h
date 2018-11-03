@@ -14,7 +14,7 @@ void check_fruit( Food &food_object,
 void draw_game( SDL_Surface *surface, 
                 Uint32 color, 
                 SDL_Window *window_draw, 
-                SpriteGroup sprite_group, 
+                Sprite head, 
                 Food food_sprite );
 
 void draw_tail(const vector<int>& tail_x, 
