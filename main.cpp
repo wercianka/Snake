@@ -21,13 +21,15 @@ void cap_framerate( Uint32 starting_tick ) {
 enum mode {
     starting_screen,
     game,
-    pause_screen
+    pause_screen,
+    game_over
 };
 
 enum menu {
     start,
     quit,
-    pause_return
+    pause_return,
+    try_again
 };
 
 
@@ -61,6 +63,7 @@ int main( int argc, char *argv[] ) {
     TTF_Font *font = TTF_OpenFont( "/home/raiya/Documents/CPP/TEST/04B_30__.TTF", 100 );
     TTF_Font *menu_font = TTF_OpenFont( "/home/raiya/Documents/CPP/TEST/Perfect DOS VGA 437.ttf", 40 );
     TTF_Font *pause_font = TTF_OpenFont( "/home/raiya/Documents/CPP/TEST/Perfect DOS VGA 437.ttf", 80 );
+    TTF_Font *score_font = TTF_OpenFont( "/home/raiya/Documents/CPP/TEST/Perfect DOS VGA 437.ttf", 30 );
     
     SDL_Surface *font_surf_title = TTF_RenderText_Solid( font, "SNAKE", white_color );
     SDL_Surface *font_surf_pause = TTF_RenderText_Solid( pause_font, "PAUSE", white_color );
@@ -68,8 +71,23 @@ int main( int argc, char *argv[] ) {
     SDL_Surface *font_surf_menu_start_selected = TTF_RenderText_Solid( menu_font, "START", menu_color );
     SDL_Surface *font_surf_menu_quit = TTF_RenderText_Solid( menu_font, "QUIT", white_color );
     SDL_Surface *font_surf_menu_quit_selected = TTF_RenderText_Solid( menu_font, "QUIT", menu_color );
-    //SDL_Surface *font_surf_score = TTF_RenderText_Solid( menu_font, "SCORE", white_color );
+    SDL_Surface *font_surf_score = TTF_RenderText_Solid( menu_font, "SCORE", white_color );
+    SDL_Surface *font_surf_game_over = TTF_RenderText_Solid( pause_font, "GAME OVER", white_color );
+    SDL_Surface *font_surf_try_again = TTF_RenderText_Solid( menu_font, "TRY AGAIN", white_color );
+    SDL_Surface *font_surf_try_again_selected = TTF_RenderText_Solid( menu_font, "TRY AGAIN", menu_color );
 
+    SDL_Surface *font_surf_number_1 = TTF_RenderText_Solid( score_font, "1", white_color );
+    SDL_Surface *font_surf_number_2 = TTF_RenderText_Solid( score_font, "2", white_color );
+    SDL_Surface *font_surf_number_3 = TTF_RenderText_Solid( score_font, "3", white_color );
+    SDL_Surface *font_surf_number_4 = TTF_RenderText_Solid( score_font, "4", white_color );
+    SDL_Surface *font_surf_number_5 = TTF_RenderText_Solid( score_font, "5", white_color );
+    SDL_Surface *font_surf_number_6 = TTF_RenderText_Solid( score_font, "6", white_color );
+    SDL_Surface *font_surf_number_7 = TTF_RenderText_Solid( score_font, "7", white_color );
+    SDL_Surface *font_surf_number_8 = TTF_RenderText_Solid( score_font, "8", white_color );
+    SDL_Surface *font_surf_number_9 = TTF_RenderText_Solid( score_font, "9", white_color );
+    SDL_Surface *font_surf_number_0 = TTF_RenderText_Solid( score_font, "0", white_color );
+
+    
 
     SDL_Rect frect;
     
@@ -140,23 +158,55 @@ int main( int argc, char *argv[] ) {
                     case mode::game:
                         switch ( event.key.keysym.sym ) {
                             case SDLK_d:
-                                dir_x = 1;
-                                dir_y = 0;
+                                if ( total > 0 ) {
+                                    if ( !check_reverse( tail_x, tail_y, object, 1, 0 ) ) {
+                                        dir_x = 1;
+                                        dir_y = 0;
+                                    }
+                                }
+                                else {
+                                    dir_x = 1;
+                                    dir_y = 0;
+                                }
                                 
                                 break;
                             case SDLK_w:
-                                dir_x = 0;
-                                dir_y = -1;
+                                if ( total > 0 ) {
+                                    if ( !check_reverse( tail_x, tail_y, object, 0, -1 ) ) {
+                                        dir_x = 0;
+                                        dir_y = -1;
+                                    }
+                                }
+                                else {
+                                    dir_x = 0;
+                                    dir_y = -1;
+                                }
                                 
                                 break;
                             case SDLK_a:
-                                dir_x = -1;
-                                dir_y = 0;
+                                if ( total > 0 ) {
+                                    if ( !check_reverse( tail_x, tail_y, object, -1, 0 ) ) {
+                                        dir_x = -1;
+                                        dir_y = 0;
+                                    }
+                                }
+                                else {
+                                    dir_x = -1;
+                                    dir_y = 0;
+                                }
                                 
                                 break;
                             case SDLK_s:
-                                dir_x = 0;
-                                dir_y = 1;
+                                if ( total > 0 ) {
+                                    if ( !check_reverse( tail_x, tail_y, object, 0, 1 ) ) {
+                                        dir_x = 0;
+                                        dir_y = 1;
+                                    }
+                                }
+                                else {
+                                    dir_x = 0;
+                                    dir_y = 1;
+                                }
                                 
                                 break;
                             case SDLK_SPACE:
@@ -169,6 +219,8 @@ int main( int argc, char *argv[] ) {
                             mode_number = game;
                         }
                         
+                        break;
+                    case mode::game_over:
                         break;
                 
                 }
@@ -219,10 +271,18 @@ int main( int argc, char *argv[] ) {
                 
                     check_fruit( apple, object, total, tail_x, tail_y, object );
                     
-                    //score = total;
-                    
+                    score = total;
+                   /////////// switch () {
+                        //case 1:
+                        //    SDL_BlitSurface( font_surf_number_1, NULL, screen, NULL );
+
+                   // }
                     
                     object.set_values( dir_x, dir_y );
+                    
+                  //  if ( check_collision( tail_x, tail_y, object, total ) ) {
+                 //       mode_number = game_over;
+                  //  }
                     
                     SDL_FillRect( screen, NULL, black );
                     
@@ -246,6 +306,15 @@ int main( int argc, char *argv[] ) {
                 
                 SDL_UpdateWindowSurface( window );
 
+                
+                break;
+            case mode::game_over:
+                SDL_FillRect( screen, NULL, black );
+                
+                frect.x = 92;
+                frect.y = 60;
+                
+                SDL_BlitSurface( font_surf_game_over, NULL, screen, &frect );
                 
                 break;
         }

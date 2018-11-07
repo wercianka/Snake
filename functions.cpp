@@ -78,3 +78,24 @@ void move_tail( vector<int>& tail_x,
 
     }
 }
+
+bool check_collision( const vector<int>& tail_x, const vector<int>& tail_y, Sprite object, int total ) {
+    for ( int i = 0; i < total; i++ ) {
+        if ( ( tail_x[i] == object.value_x() ) && ( tail_y[i] == object.value_y() ) ) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool check_reverse( const vector<int>& tail_x, const vector<int>& tail_y, Sprite object, int dir_x, int dir_y)  {
+    if ( ( (object.value_x() + 16*dir_x) == (tail_x[0]) ) && ( (object.value_y() + 16*dir_y) == tail_y[0] ) ) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+
+

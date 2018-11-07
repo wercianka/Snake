@@ -29,5 +29,17 @@ void move_tail( vector<int>& tail_x,
                 Uint32 color, 
                 SDL_Surface *destination, 
                 Sprite object );
+                
+bool check_collision( const vector<int>& tail_x, 
+                      const vector<int>& tail_y, 
+                      Sprite object, 
+                      int total );
+
+bool check_reverse( const vector<int>& tail_x, 
+                    const vector<int>& tail_y, 
+                    Sprite object,
+                    int dir_x,
+                    int dir_y);
+
 
 #endif
