@@ -96,3 +96,26 @@ bool check_border( int dir_x, int dir_y, const vector<int>& snake_x, const vecto
     return false;
 }
 
+bool check_border_death( int dir_x, int dir_y, const vector<int>& snake_x, const vector<int>& snake_y ) {
+    if ( ( snake_x[0] < 0 ) && ( dir_x == -1 )  ) {
+        return true;
+    }
+    
+    
+    if ( ( snake_x[0] > ( 640 - 16 ) ) && ( dir_x == 1 )  ) {
+        return true;
+    }
+    
+    
+    if ( ( snake_y[0] < 0 ) && ( dir_y == -1 )  ) {
+        return true;
+    }
+    
+    
+    if ( ( snake_y[0] > ( 480 - 16 ) ) && ( dir_y == 1 )  ) {
+        return true;
+    }
+    
+    return false;
+}
+

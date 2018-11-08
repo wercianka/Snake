@@ -5,7 +5,6 @@
 #include <string>
 
 
-
 #define window_width 640
 #define window_height 480
 
@@ -31,7 +30,9 @@ enum menu {
     quit,
     try_again,
     options,
-    back
+    back,
+    death,
+    sound
 };
 
 
@@ -56,6 +57,9 @@ int main( int argc, char *argv[] ) {
     
     int total = 0;
     
+    bool edge_death = false;
+    bool play_sound = true;
+    
     Uint32 white = SDL_MapRGB( screen->format, 255, 255, 255 );
     Uint32 black = SDL_MapRGB( screen->format, 0, 0, 0 );
     Uint32 red = SDL_MapRGB( screen->format, 255, 0, 0 );
@@ -72,6 +76,7 @@ int main( int argc, char *argv[] ) {
     SDL_Surface *font_surf_title = TTF_RenderText_Solid( font, "SNAKE", white_color );
     SDL_Surface *font_surf_pause = TTF_RenderText_Solid( pause_font, "PAUSE", white_color );
     SDL_Surface *font_surf_options = TTF_RenderText_Solid( pause_font, "OPTIONS", white_color );
+    
     SDL_Surface *font_surf_menu_start = TTF_RenderText_Solid( menu_font, "START", white_color );
     SDL_Surface *font_surf_menu_start_selected = TTF_RenderText_Solid( menu_font, "START", menu_color );
     SDL_Surface *font_surf_menu_quit = TTF_RenderText_Solid( menu_font, "QUIT", white_color );
@@ -80,6 +85,14 @@ int main( int argc, char *argv[] ) {
     SDL_Surface *font_surf_menu_options_selected = TTF_RenderText_Solid( menu_font, "OPTIONS", menu_color );
     SDL_Surface *font_surf_menu_back = TTF_RenderText_Solid( menu_font, "BACK", white_color );
     SDL_Surface *font_surf_menu_back_selected = TTF_RenderText_Solid( menu_font, "BACK", menu_color );
+    
+    SDL_Surface *font_surf_menu_yes = TTF_RenderText_Solid( menu_font, "YES", white_color );
+    SDL_Surface *font_surf_menu_yes_selected = TTF_RenderText_Solid( menu_font, "YES", menu_color );
+    SDL_Surface *font_surf_menu_no = TTF_RenderText_Solid( menu_font, "NO", white_color );
+    SDL_Surface *font_surf_menu_no_selected = TTF_RenderText_Solid( menu_font, "NO", menu_color );
+    SDL_Surface *font_surf_death = TTF_RenderText_Solid( menu_font, "DEATH AT EDGES", white_color );
+    SDL_Surface *font_surf_sound = TTF_RenderText_Solid( menu_font, "SOUNDS", white_color );
+    
     SDL_Surface *font_surf_score = TTF_RenderText_Solid( menu_font, "SCORE", white_color );
     SDL_Surface *font_surf_game_over = TTF_RenderText_Solid( game_over_font, "GAME OVER", white_color );
     SDL_Surface *font_surf_try_again = TTF_RenderText_Solid( menu_font, "TRY AGAIN", white_color );
@@ -132,7 +145,8 @@ int main( int argc, char *argv[] ) {
     mode mode_number = options_screen;
     menu menu_number = back;
     //mode mode_number = pause_screen;
-    
+    string file_path = __FILE__;
+    string dir_path = file_path.substr(0, file_path.rfind("main.cpp"));
     
     Uint32 starting_tick;
     
@@ -220,7 +234,123 @@ int main( int argc, char *argv[] ) {
                                     menu_number = options;
                                     mode_number = starting_screen;
                                 }
-                            
+                                break;
+                            case SDLK_w:
+                                if ( menu_number == menu::back ) {
+                                    menu_number = sound;
+                                }
+                                else if ( menu_number == menu::sound ) {
+                                    menu_number = death;
+                                }
+                                else {
+                                    menu_number = back;
+                                }
+                                break;
+                            case SDLK_s:
+                                if ( menu_number == menu::back ) {
+                                    menu_number = death;
+                                }
+                                else if ( menu_number == death ) {
+                                    menu_number = sound;
+                                }
+                                else {
+                                    menu_number = back;
+                                }
+                                break;
+                            case SDLK_UP:
+                                if ( menu_number == menu::back ) {
+                                    menu_number = sound;
+                                }
+                                else if ( menu_number == menu::sound ) {
+                                    menu_number = death;
+                                }
+                                else {
+                                    menu_number = back;
+                                }
+                                break;
+                            case SDLK_DOWN:
+                                if ( menu_number == menu::back ) {
+                                    menu_number = death;
+                                }
+                                else if ( menu_number == death ) {
+                                    menu_number = sound;
+                                }
+                                else {
+                                    menu_number = back;
+                                }
+                                break;
+                            case SDLK_d:
+                                if ( menu_number == menu::death ) {
+                                    if ( !edge_death ) {
+                                        edge_death = true;
+                                    }
+                                    else {
+                                        edge_death = false;
+                                    }
+                                }
+                                else if ( menu_number == menu::sound ) {
+                                    if ( play_sound ) {
+                                        play_sound = false;
+                                    }
+                                    else {
+                                        play_sound = true;
+                                    }
+                                }
+                                break;
+                            case SDLK_a:
+                                if ( menu_number == menu::death ) {
+                                    if ( !edge_death ) {
+                                        edge_death = true;
+                                    }
+                                    else {
+                                        edge_death = false;
+                                    }
+                                }
+                                else if ( menu_number == menu::sound ) {
+                                    if ( play_sound ) {
+                                        play_sound = false;
+                                    }
+                                    else {
+                                        play_sound = true;
+                                    }
+                                }
+                                break;
+                            case SDLK_RIGHT:
+                                if ( menu_number == menu::death ) {
+                                    if ( !edge_death ) {
+                                        edge_death = true;
+                                    }
+                                    else {
+                                        edge_death = false;
+                                    }
+                                }
+                                else if ( menu_number == menu::sound ) {
+                                    if ( play_sound ) {
+                                        play_sound = false;
+                                    }
+                                    else {
+                                        play_sound = true;
+                                    }
+                                }
+                                break;
+                            case SDLK_LEFT:
+                                if ( menu_number == menu::death ) {
+                                    if ( !edge_death ) {
+                                        edge_death = true;
+                                    }
+                                    else {
+                                        edge_death = false;
+                                    }
+                                }
+                                else if ( menu_number == menu::sound ) {
+                                    if ( play_sound ) {
+                                        play_sound = false;
+                                    }
+                                    else {
+                                        play_sound = true;
+                                    }
+                                }
+                                break;
                             
                         }
                         break;
@@ -459,16 +589,13 @@ int main( int argc, char *argv[] ) {
                 
                 SDL_Delay( 120 );
                 
-
-                if ( !check_border( dir_x, dir_y, snake_x, snake_y ) ) {
-                
                     check_fruit( apple, total, snake_x, snake_y );
                     
                     frect.y = 5;
                     frect.x = 390;
                     
                     score = to_string(total);
-                    int score_size = score.length();
+                    score_size = score.length();
                     
                     SDL_FillRect( screen, NULL, black );
                     
@@ -511,8 +638,15 @@ int main( int argc, char *argv[] ) {
                                 break;
                         }
                     }
-                                    
-                    move_snake( snake_x, snake_y, total, white, screen, dir_x, dir_y );
+                    
+                    if ( !edge_death ) {
+                        if ( !check_border( dir_x, dir_y, snake_x, snake_y ) ) {
+                            move_snake( snake_x, snake_y, total, white, screen, dir_x, dir_y );
+                        }
+                    }
+                    else {
+                        move_snake( snake_x, snake_y, total, white, screen, dir_x, dir_y );
+                    }
                     draw_snake( snake_x, snake_y, total, white, screen );
                 
                     apple.draw( screen );
@@ -522,8 +656,13 @@ int main( int argc, char *argv[] ) {
                         menu_number = try_again;
                         mode_number = game_over;
                     }
-
-                }
+                    
+                    if ( edge_death ) {
+                        if ( check_border_death( dir_x, dir_y, snake_x, snake_y ) ) {
+                            menu_number = try_again;
+                            mode_number = game_over;
+                        }
+                    }
                 
                 break;
             case mode::pause_screen:
@@ -650,6 +789,55 @@ int main( int argc, char *argv[] ) {
                 else {
                     SDL_BlitSurface( font_surf_menu_back_selected, NULL, screen, &frect );
                 }
+                
+                frect.x = 110;
+                frect.y = 190;
+                
+                SDL_BlitSurface( font_surf_death, NULL, screen, &frect );
+                
+                frect.x = 460;
+                
+                if ( menu_number != menu::death ) {
+                    if ( !edge_death ) {
+                        SDL_BlitSurface( font_surf_menu_no, NULL, screen, &frect );
+                    }
+                    else {
+                        SDL_BlitSurface( font_surf_menu_yes, NULL, screen, &frect );
+                    }
+                }
+                else {
+                     if ( !edge_death ) {
+                        SDL_BlitSurface( font_surf_menu_no_selected, NULL, screen, &frect );
+                    }
+                    else {
+                        SDL_BlitSurface( font_surf_menu_yes_selected, NULL, screen, &frect );
+                    }
+                }
+                
+                frect.x = 110;
+                frect.y = 260;
+                
+                SDL_BlitSurface( font_surf_sound, NULL, screen, &frect );
+                
+                frect.x = 460;
+                
+                if ( menu_number != menu::sound ) {
+                    if ( !play_sound ) {
+                        SDL_BlitSurface( font_surf_menu_no, NULL, screen, &frect );
+                    }
+                    else {
+                        SDL_BlitSurface( font_surf_menu_yes, NULL, screen, &frect );
+                    }
+                }
+                else {
+                     if ( !play_sound ) {
+                        SDL_BlitSurface( font_surf_menu_no_selected, NULL, screen, &frect );
+                    }
+                    else {
+                        SDL_BlitSurface( font_surf_menu_yes_selected, NULL, screen, &frect );
+                    }
+                }
+
 
                 
                 SDL_UpdateWindowSurface( window );

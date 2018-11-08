@@ -36,6 +36,11 @@ bool check_border( int dir_x,
                    int dir_y, 
                    const vector<int>& snake_x, 
                    const vector<int>& snake_y );
+                   
+bool check_border_death( int dir_x, 
+                         int dir_y, 
+                         const vector<int>& snake_x, 
+                         const vector<int>& snake_y );
 
 
 #endif
