@@ -5,6 +5,7 @@
 #include <string>
 
 
+
 #define window_width 640
 #define window_height 480
 
@@ -40,6 +41,7 @@ int main( int argc, char *argv[] ) {
     
     SDL_Init( SDL_INIT_EVERYTHING );
     TTF_Init();
+    Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 2048 );
     
     SDL_Window *window = NULL;
     window = SDL_CreateWindow( "Snake", 
@@ -124,6 +126,12 @@ int main( int argc, char *argv[] ) {
 
     SDL_Rect frect;
     
+    Mix_Chunk *sound_menu = Mix_LoadWAV( "/home/raiya/Documents/CPP/TEST/sfx_menu_move4.wav" );
+    Mix_Chunk *sound_food = Mix_LoadWAV( "/home/raiya/Documents/CPP/TEST/sfx_sound_neutral8.wav" );
+    Mix_Chunk *sound_dir = Mix_LoadWAV( "/home/raiya/Documents/CPP/TEST/sfx_movement_footsteps5.wav" );
+    Mix_Chunk *sound_pause_in = Mix_LoadWAV( "/home/raiya/Documents/CPP/TEST/sfx_sounds_pause2_in.wav" );
+    Mix_Chunk *sound_pause_out = Mix_LoadWAV( "/home/raiya/Documents/CPP/TEST/sfx_sounds_pause2_out.wav" );
+    
     
     vector<int> snake_x;
     vector<int> snake_y;
@@ -140,14 +148,11 @@ int main( int argc, char *argv[] ) {
     int score_size = 0;
     string score;
     
-    //mode mode_number = starting_screen;
-    //menu menu_number = start;
-    mode mode_number = options_screen;
-    menu menu_number = back;
-    //mode mode_number = pause_screen;
-    string file_path = __FILE__;
-    string dir_path = file_path.substr(0, file_path.rfind("main.cpp"));
-    
+    mode mode_number = starting_screen;
+    menu menu_number = start;
+
+
+   
     Uint32 starting_tick;
     
     SDL_Event event;
@@ -170,58 +175,103 @@ int main( int argc, char *argv[] ) {
                         switch ( event.key.keysym.sym ) {
                             case SDLK_RETURN:
                                 if ( menu_number == menu::start ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = back;
                                     mode_number = game;
                                 }
                                 else if ( menu_number == menu::options ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = back;
                                     mode_number = options_screen;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     running = false;
                                 }
                                 break;
                             case SDLK_w:
                                 if ( menu_number == menu::start ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = quit;
                                 }
                                 else if ( menu_number == menu::options ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = start;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = options;
                                 }
                                 break;
                             case SDLK_s:
                                 if ( menu_number == menu::start ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = options;
                                 }
                                 else if ( menu_number == menu::options ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = quit;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = start;
                                 }
                                 break;
                             case SDLK_UP:
                                 if ( menu_number == menu::start ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = quit;
                                 }
                                 else if ( menu_number == menu::options ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = start;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = options;
                                 }
                                 break;
                             case SDLK_DOWN:
                                 if ( menu_number == menu::start ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = options;
                                 }
                                 else if ( menu_number == menu::options ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = quit;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = start;
                                 }
                                 break;
@@ -231,56 +281,98 @@ int main( int argc, char *argv[] ) {
                         switch ( event.key.keysym.sym ) {
                             case SDLK_RETURN:
                                 if ( menu_number == menu::back ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = options;
                                     mode_number = starting_screen;
                                 }
                                 break;
                             case SDLK_w:
                                 if ( menu_number == menu::back ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = sound;
                                 }
                                 else if ( menu_number == menu::sound ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = death;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = back;
                                 }
                                 break;
                             case SDLK_s:
                                 if ( menu_number == menu::back ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = death;
                                 }
                                 else if ( menu_number == death ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = sound;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = back;
                                 }
                                 break;
                             case SDLK_UP:
                                 if ( menu_number == menu::back ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = sound;
                                 }
                                 else if ( menu_number == menu::sound ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = death;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = back;
                                 }
                                 break;
                             case SDLK_DOWN:
                                 if ( menu_number == menu::back ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = death;
                                 }
                                 else if ( menu_number == death ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = sound;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     menu_number = back;
                                 }
                                 break;
                             case SDLK_d:
                                 if ( menu_number == menu::death ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     if ( !edge_death ) {
                                         edge_death = true;
                                     }
@@ -289,6 +381,9 @@ int main( int argc, char *argv[] ) {
                                     }
                                 }
                                 else if ( menu_number == menu::sound ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     if ( play_sound ) {
                                         play_sound = false;
                                     }
@@ -299,6 +394,9 @@ int main( int argc, char *argv[] ) {
                                 break;
                             case SDLK_a:
                                 if ( menu_number == menu::death ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     if ( !edge_death ) {
                                         edge_death = true;
                                     }
@@ -307,6 +405,9 @@ int main( int argc, char *argv[] ) {
                                     }
                                 }
                                 else if ( menu_number == menu::sound ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     if ( play_sound ) {
                                         play_sound = false;
                                     }
@@ -317,6 +418,9 @@ int main( int argc, char *argv[] ) {
                                 break;
                             case SDLK_RIGHT:
                                 if ( menu_number == menu::death ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     if ( !edge_death ) {
                                         edge_death = true;
                                     }
@@ -325,6 +429,9 @@ int main( int argc, char *argv[] ) {
                                     }
                                 }
                                 else if ( menu_number == menu::sound ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     if ( play_sound ) {
                                         play_sound = false;
                                     }
@@ -335,6 +442,9 @@ int main( int argc, char *argv[] ) {
                                 break;
                             case SDLK_LEFT:
                                 if ( menu_number == menu::death ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     if ( !edge_death ) {
                                         edge_death = true;
                                     }
@@ -343,6 +453,9 @@ int main( int argc, char *argv[] ) {
                                     }
                                 }
                                 else if ( menu_number == menu::sound ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_menu, 0);
+                                    }
                                     if ( play_sound ) {
                                         play_sound = false;
                                     }
@@ -359,11 +472,17 @@ int main( int argc, char *argv[] ) {
                             case SDLK_d:
                                 if ( total > 0 ) {
                                     if ( !check_reverse( snake_x, snake_y, 1, 0 ) ) {
+                                        if ( play_sound ) {
+                                            Mix_PlayChannel(-1, sound_dir, 0);
+                                        }
                                         dir_x = 1;
                                         dir_y = 0;
                                     }
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                            Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     dir_x = 1;
                                     dir_y = 0;
                                 }
@@ -372,11 +491,17 @@ int main( int argc, char *argv[] ) {
                             case SDLK_w:
                                 if ( total > 0 ) {
                                     if ( !check_reverse( snake_x, snake_y, 0, -1 ) ) {
+                                        if ( play_sound ) {
+                                            Mix_PlayChannel(-1, sound_dir, 0);
+                                        }
                                         dir_x = 0;
                                         dir_y = -1;
                                     }
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     dir_x = 0;
                                     dir_y = -1;
                                 }
@@ -385,11 +510,17 @@ int main( int argc, char *argv[] ) {
                             case SDLK_a:
                                 if ( total > 0 ) {
                                     if ( !check_reverse( snake_x, snake_y, -1, 0 ) ) {
+                                        if ( play_sound ) {
+                                            Mix_PlayChannel(-1, sound_dir, 0);
+                                        }
                                         dir_x = -1;
                                         dir_y = 0;
                                     }
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                            Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     dir_x = -1;
                                     dir_y = 0;
                                 }
@@ -398,11 +529,17 @@ int main( int argc, char *argv[] ) {
                             case SDLK_s:
                                 if ( total > 0 ) {
                                     if ( !check_reverse( snake_x, snake_y, 0, 1 ) ) {
+                                        if ( play_sound ) {
+                                            Mix_PlayChannel(-1, sound_dir, 0);
+                                        }
                                         dir_x = 0;
                                         dir_y = 1;
                                     }
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     dir_x = 0;
                                     dir_y = 1;
                                 }
@@ -411,11 +548,17 @@ int main( int argc, char *argv[] ) {
                             case SDLK_RIGHT:
                                 if ( total > 0 ) {
                                     if ( !check_reverse( snake_x, snake_y, 1, 0 ) ) {
+                                        if ( play_sound ) {
+                                            Mix_PlayChannel(-1, sound_dir, 0);
+                                        }
                                         dir_x = 1;
                                         dir_y = 0;
                                     }
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                            Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     dir_x = 1;
                                     dir_y = 0;
                                 }
@@ -424,11 +567,17 @@ int main( int argc, char *argv[] ) {
                             case SDLK_UP:
                                 if ( total > 0 ) {
                                     if ( !check_reverse( snake_x, snake_y, 0, -1 ) ) {
+                                        if ( play_sound ) {
+                                            Mix_PlayChannel(-1, sound_dir, 0);
+                                        }
                                         dir_x = 0;
                                         dir_y = -1;
                                     }
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     dir_x = 0;
                                     dir_y = -1;
                                 }
@@ -437,11 +586,17 @@ int main( int argc, char *argv[] ) {
                             case SDLK_LEFT:
                                 if ( total > 0 ) {
                                     if ( !check_reverse( snake_x, snake_y, -1, 0 ) ) {
+                                        if ( play_sound ) {
+                                            Mix_PlayChannel(-1, sound_dir, 0);
+                                        }
                                         dir_x = -1;
                                         dir_y = 0;
                                     }
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     dir_x = -1;
                                     dir_y = 0;
                                 }
@@ -450,23 +605,35 @@ int main( int argc, char *argv[] ) {
                             case SDLK_DOWN:
                                 if ( total > 0 ) {
                                     if ( !check_reverse( snake_x, snake_y, 0, 1 ) ) {
+                                        if ( play_sound ) {
+                                            Mix_PlayChannel(-1, sound_dir, 0);
+                                        }
                                         dir_x = 0;
                                         dir_y = 1;
                                     }
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     dir_x = 0;
                                     dir_y = 1;
                                 }
                                 
                                 break;
                             case SDLK_SPACE:
+                                if ( play_sound ) {
+                                    Mix_PlayChannel(-1, sound_pause_in, 0);
+                                }
                                 mode_number = pause_screen;
                                 break;
                         }
                         break;
                     case mode::pause_screen:
                         if ( event.key.keysym.sym == SDLK_SPACE ) {
+                            if ( play_sound ) {
+                                    Mix_PlayChannel(-1, sound_pause_out, 0);
+                            }
                             mode_number = game;
                         }
                         
@@ -475,9 +642,15 @@ int main( int argc, char *argv[] ) {
                         switch ( event.key.keysym.sym ) {
                             case SDLK_RETURN:
                                 if ( menu_number == menu::quit ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     running = false;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     total = 0;
                                     dir_x = 0;
                                     dir_y = 0;
@@ -497,33 +670,57 @@ int main( int argc, char *argv[] ) {
                                 }
                             case SDLK_w:
                                 if ( menu_number == menu::try_again ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     menu_number = quit;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     menu_number = try_again;
                                 }
                                 break;
                             case SDLK_s:
                                 if ( menu_number == menu::try_again ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     menu_number = quit;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     menu_number = try_again;
                                 }
                                 break;
                             case SDLK_UP:
                                 if ( menu_number == menu::try_again ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     menu_number = quit;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     menu_number = try_again;
                                 }
                                 break;
                             case SDLK_DOWN:
                                 if ( menu_number == menu::try_again ) {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     menu_number = quit;
                                 }
                                 else {
+                                    if ( play_sound ) {
+                                        Mix_PlayChannel(-1, sound_dir, 0);
+                                    }
                                     menu_number = try_again;
                                 }
                                 break;
@@ -589,7 +786,7 @@ int main( int argc, char *argv[] ) {
                 
                 SDL_Delay( 120 );
                 
-                    check_fruit( apple, total, snake_x, snake_y );
+                    check_fruit( apple, total, snake_x, snake_y, sound_food, play_sound );
                     
                     frect.y = 5;
                     frect.x = 390;
@@ -764,7 +961,7 @@ int main( int argc, char *argv[] ) {
                 break;
             case mode::options_screen:
                 SDL_FillRect( screen, NULL, black );
-                
+
                 frect.x = 88;
                 frect.y = 30;
                 
@@ -856,6 +1053,7 @@ int main( int argc, char *argv[] ) {
     TTF_CloseFont( score_font );
     TTF_CloseFont( game_over_font );
     TTF_Quit();
+    Mix_CloseAudio();
     SDL_DestroyWindow( window );
     SDL_Quit();
     return 0;

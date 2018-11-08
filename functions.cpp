@@ -4,12 +4,17 @@
 void check_fruit( Food &food_object, 
                   int &total, 
                   vector<int>& snake_x,
-                  vector<int>& snake_y) {
+                  vector<int>& snake_y,
+                  Mix_Chunk *sound_food,
+                  bool play_sound) {
     if ( ( food_object.value_x() == snake_x[0] ) && ( food_object.value_y() == snake_y[0] ) ) {
         food_object.generate();
         total = total + 1;
         snake_x.push_back( 0 );
         snake_y.push_back( 0 );
+        if ( play_sound ) {
+            Mix_PlayChannel(-1, sound_food, 0);
+        }
     }
 }
 

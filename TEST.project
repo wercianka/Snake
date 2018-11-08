@@ -28,7 +28,7 @@
         <IncludePath Value="."/>
         <IncludePath Value="/home/raiya/Documents/CPP/TEST/headers"/>
       </Compiler>
-      <Linker Options="-lSDL2_ttf" Required="yes">
+      <Linker Options="-lSDL2_ttf;-lSDL2_mixer" Required="yes">
         <LibraryPath Value="/usr/include/SDL2"/>
         <Library Value="SDL2"/>
       </Linker>

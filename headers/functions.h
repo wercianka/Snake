@@ -2,12 +2,15 @@
 #define FUNCTIONS_H
 
 #include "classes.h"
+#include <SDL2/SDL_mixer.h>
 
 
 void check_fruit( Food &food_object, 
                   int &total, 
                   vector<int>& snake_x,
-                  vector<int>& snake_y);
+                  vector<int>& snake_y,
+                  Mix_Chunk *sound_food,
+                  bool play_sound);
 
 void draw_snake(const vector<int>& snake_x, 
                const vector<int>& snake_y, 
