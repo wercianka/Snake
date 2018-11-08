@@ -2,44 +2,19 @@
 
 
 void check_fruit( Food &food_object, 
-                  Sprite sprite_object, 
                   int &total, 
-                  vector<int>& tail_x,
-                  vector<int>& tail_y,
-                  Sprite object) {
-    if ( ( food_object.value_x() == sprite_object.value_x() ) && ( food_object.value_y() == sprite_object.value_y() ) ) {
+                  vector<int>& snake_x,
+                  vector<int>& snake_y) {
+    if ( ( food_object.value_x() == snake_x[0] ) && ( food_object.value_y() == snake_y[0] ) ) {
         food_object.generate();
         total = total + 1;
-        tail_x.push_back( object.value_x() );
-        tail_y.push_back( object.value_y() );
-        
-        /*
-        for ( int i = total-1; i >= 0; i-- ) {
-        if ( i != 0 ) {
-            tail_x[i] = tail_x[i-1];
-            tail_y[i] = tail_y[i-1];
-        }
-        
-        tail_x[0] = object.value_x();
-        tail_y[0] = object.value_y();
-        }
-        */
+        snake_x.push_back( 0 );
+        snake_y.push_back( 0 );
     }
 }
 
-void draw_game( SDL_Surface *surface, 
-                Uint32 color, 
-                SDL_Window *window_draw, 
-                Sprite head, 
-                Food food_sprite ) {
-                    
-    head.draw( surface );
-    food_sprite.draw( surface );
-    SDL_UpdateWindowSurface( window_draw );
-}
-
-void draw_tail(const vector<int>& tail_x, 
-               const vector<int>& tail_y, 
+void draw_snake(const vector<int>& snake_x, 
+               const vector<int>& snake_y, 
                int total, 
                Uint32 color, 
                SDL_Surface *destination ) {
@@ -51,45 +26,46 @@ void draw_tail(const vector<int>& tail_x,
     
     SDL_FillRect( image, NULL, color );
                    
-    for ( int i = total-1; i >= 0; i-- ) {
-        rect.x = tail_x[i];
-        rect.y = tail_y[i];
+    for ( int i = total; i >= 0; i-- ) {
+        rect.x = snake_x[i];
+        rect.y = snake_y[i];
         SDL_BlitSurface( image, NULL, destination, &rect );
 
     }
 }
 
-void move_tail( vector<int>& tail_x, 
-                vector<int>& tail_y, 
+void move_snake( vector<int>& snake_x, 
+                vector<int>& snake_y, 
                 int total, 
                 Uint32 color, 
                 SDL_Surface *destination, 
-                Sprite object ) {
+                int dir_x,
+                int dir_y) {
                     
-    for ( int i = total-1; i >= 0; i-- ) {
+    for ( int i = total; i >= 0; i-- ) {
         if ( i != 0 ) {
-            tail_x[i] = tail_x[i-1];
-            tail_y[i] = tail_y[i-1];
+            snake_x[i] = snake_x[i-1];
+            snake_y[i] = snake_y[i-1];
         }
         else {
-            tail_x[0] = object.value_x();
-            tail_y[0] = object.value_y();
+            snake_x[0] = snake_x[0] + dir_x*16;
+            snake_y[0] = snake_y[0] + dir_y*16;
         }
 
     }
 }
 
-bool check_collision( const vector<int>& tail_x, const vector<int>& tail_y, Sprite object, int total ) {
-    for ( int i = 0; i < total; i++ ) {
-        if ( ( tail_x[i] == object.value_x() ) && ( tail_y[i] == object.value_y() ) ) {
+bool check_collision( const vector<int>& snake_x, const vector<int>& snake_y, int total ) {
+    for ( int i = 1; i <= total; i++ ) {
+        if ( ( snake_x[i] == snake_x[0] ) && ( snake_y[i] == snake_y[0] ) ) {
             return true;
         }
     }
     return false;
 }
 
-bool check_reverse( const vector<int>& tail_x, const vector<int>& tail_y, Sprite object, int dir_x, int dir_y)  {
-    if ( ( (object.value_x() + 16*dir_x) == (tail_x[0]) ) && ( (object.value_y() + 16*dir_y) == tail_y[0] ) ) {
+bool check_reverse( const vector<int>& snake_x, const vector<int>& snake_y, int dir_x, int dir_y)  {
+    if ( ( (snake_x[0] + 16*dir_x) == (snake_x[1]) ) && ( (snake_y[0] + 16*dir_y) == snake_y[1] ) ) {
         return true;
     }
     else {
@@ -97,5 +73,26 @@ bool check_reverse( const vector<int>& tail_x, const vector<int>& tail_y, Sprite
     }
 }
 
-
+bool check_border( int dir_x, int dir_y, const vector<int>& snake_x, const vector<int>& snake_y ) {
+    if ( ( snake_x[0] <= 0 ) && ( dir_x == -1 )  ) {
+        return true;
+    }
+    
+    
+    if ( ( snake_x[0] >= ( 640 - 16 ) ) && ( dir_x == 1 )  ) {
+        return true;
+    }
+    
+    
+    if ( ( snake_y[0] <= 0 ) && ( dir_y == -1 )  ) {
+        return true;
+    }
+    
+    
+    if ( ( snake_y[0] >= ( 480 - 16 ) ) && ( dir_y == 1 )  ) {
+        return true;
+    }
+    
+    return false;
+}
 
